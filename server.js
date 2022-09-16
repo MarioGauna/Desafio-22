@@ -1,11 +1,15 @@
 import express from 'express';
-import routesProd from './routes/routesProd.js';
-import routesCart from './routes/routesCart.js';
-import usuario from './routes/routesUser.js';
+//import routesProd from './routes/routesProd.js';
+//import routesCart from './routes/routesCart.js';
+//import usuario from './routes/routesUser.js';
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import session from "express-session";
-import './passport/local.js'
+import './passport/local.js';
+import {graphqlHTTP} from "express-graphql";
+import {schema} from "./graphql/schema.js";
+import {ProductoService} from "./services/classMongoProductos.js";
+
 
 const app = express();
 
@@ -28,12 +32,28 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/',usuario);
+/* app.use('/',usuario);
 app.use('/api/productos', routesProd);
 app.use('/api/carrito', routesCart);
 app.get('*',async(req, res)=>{
     res.status(404).json({"error": "Ruta no habilitada"})
-})
+}) */
+
+async function productAll(){
+    return ProductoService.getAll();
+}
+
+app.use(
+    '/graphql',
+    graphqlHTTP({
+            schema,
+            rootValue: {
+                productAll
+            },
+            graphiql: true
+        }
+    )
+);
 
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, ()=> console.log(`Servidor iniciado en el puerto ${PORT}`));
