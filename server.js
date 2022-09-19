@@ -7,9 +7,9 @@ import passport from "passport";
 import session from "express-session";
 import './passport/local.js';
 import {graphqlHTTP} from "express-graphql";
-import {schema} from "./graphql/schema.js";
-import {ProductoService} from "./services/classMongoProductos.js";
-
+import { typeDef } from "./graphql/schema.js";
+import { resolvers } from "./graphql/resolvers.js";
+import {makeExecutableSchema} from "@graphql-tools/schema";
 
 const app = express();
 
@@ -39,35 +39,13 @@ app.use(passport.session());
     res.status(404).json({"error": "Ruta no habilitada"})
 }) */ 
 
-async function productAll(){
-    return await ProductoService.getInstance().getAll();
-}
-
-async function productById({id}){
-    return ProductoService.getInstance().getById(id);
-}
-
-async function createProduct({data}){
-    return ProductoService.getInstance().create(data);
-}
-
-async function updateProduct({id,data}){
-    return ProductoService.getInstance().updateById(id,data);
-}
-
-async function deleteProduct({id}){
-    return ProductoService.getInstance().deleteById(id);
-}
+const schema = makeExecutableSchema({
+    typeDefs: typeDef,
+    resolvers: resolvers,
+});
 
 app.use('/graphql',graphqlHTTP({
-    schema,
-    rootValue: {
-        productAll,
-        productById,
-        createProduct,
-        updateProduct,
-        deleteProduct
-    },
+    schema:schema,
     graphiql: true,
     })
 );

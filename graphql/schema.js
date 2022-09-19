@@ -1,26 +1,44 @@
-import {buildSchema} from "graphql";
-import {ProductType} from "./types/productoType.js";
-import {ProductoNewInput} from "./inputs/productNew.js";
-import {ProductoUpdateInput} from "./inputs/productpdate.js";
-import {GetAllProductosQuery} from "./queries/productAll.js";
-import {GetProductByIdQuery} from "./queries/productById.js";
-import {CreateProductoMutation} from "./mutations/productAdd.js";
-import {UpdateProductByIdMutation} from "./mutations/productUpdate.js";
-import {DeleteProductByIdMutation} from "./mutations/productdelete.js";
+const msj="carrito borrado"
 
-export const schema = buildSchema(`
-    ${ProductType}
-    ${ProductoNewInput}
-    ${ProductoUpdateInput}
-    
-    type Query{
-        ${GetAllProductosQuery}
-        ${GetProductByIdQuery}
-    }
-
-    type Mutation{
-        ${CreateProductoMutation}
-        ${UpdateProductByIdMutation}
-        ${DeleteProductByIdMutation}
-    }
-`);
+export const typeDef= `
+type Query {
+    getAllProducts: [Producto]
+    getProductById(_id:ID!): Producto
+    getCartById(_id:ID!): Carrito
+}
+type Mutation {
+    addProduct(data: ProductoNewInput): Producto
+    deleteProduct(_id:ID!): Producto
+    updateProduct(_id:ID!, data: ProductoUpdateInput): Producto
+    createCart: Carrito
+    deleteCart(_id:ID!): Carrito
+}
+type Producto {
+    _id: ID
+    title: String
+    description: String
+    price: Float
+    image: String
+    stock: Int
+    timestamp: String
+}
+type Carrito {
+    _id: ID
+    products:[Producto]
+    timestamp: String
+}
+input ProductoNewInput {
+    title: String
+    description: String
+    price: Float
+    image: String
+    stock: Int
+}
+input ProductoUpdateInput {
+    title: String
+    description: String
+    price: Float
+    image: String
+    stock: Int
+}
+`;
