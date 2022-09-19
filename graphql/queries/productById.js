@@ -1,3 +1,3 @@
-export const productById =`
-    getByIdProduct(id:ID!): Producto
+export const GetProductByIdQuery = `
+    getProductById(_id:ID!): Producto
 `

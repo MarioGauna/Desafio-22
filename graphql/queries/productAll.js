@@ -1,3 +1,3 @@
-export const productAll =`
+export const GetAllProductosQuery = `
     getAllProductos: [Producto]
 `

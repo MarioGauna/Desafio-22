@@ -1,6 +1,6 @@
-export const productType = `
+export const ProductType = `
     type Producto {
-        id: ID!
+        _id: ID
         title: String
         description: String
         price: Int

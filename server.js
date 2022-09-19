@@ -32,29 +32,46 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-/* app.use('/',usuario);
-app.use('/api/productos', routesProd);
-app.use('/api/carrito', routesCart);
-app.get('*',async(req, res)=>{
+//app.use('/',usuario);
+//app.use('/api/productos', routesProd);
+//app.use('/api/carrito', routesCart);
+/* app.get('*',async(req, res)=>{
     res.status(404).json({"error": "Ruta no habilitada"})
-}) */
+}) */ 
 
 async function productAll(){
-    return ProductoService.getAll();
+    return await ProductoService.getInstance().getAll();
 }
 
-app.use(
-    '/graphql',
-    graphqlHTTP({
-            schema,
-            rootValue: {
-                productAll
-            },
-            graphiql: true
-        }
-    )
+async function productById({id}){
+    return ProductoService.getInstance().getById(id);
+}
+
+async function createProduct({data}){
+    return ProductoService.getInstance().create(data);
+}
+
+async function updateProduct({id,data}){
+    return ProductoService.getInstance().updateById(id,data);
+}
+
+async function deleteProduct({id}){
+    return ProductoService.getInstance().deleteById(id);
+}
+
+app.use('/graphql',graphqlHTTP({
+    schema,
+    rootValue: {
+        productAll,
+        productById,
+        createProduct,
+        updateProduct,
+        deleteProduct
+    },
+    graphiql: true,
+    })
 );
 
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, ()=> console.log(`Servidor iniciado en el puerto ${PORT}`));
-server.on('error',(error) => console.log(err));
+server.on('error',(error) => console.log(error));

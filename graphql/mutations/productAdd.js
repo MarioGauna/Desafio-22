@@ -1,3 +1,3 @@
-export const productAdd=`
-    createProduct(data:ProductoNew): Producto
+export const CreateProductoMutation= `
+    createProduct(data: ProductoNewInput): Producto
 `

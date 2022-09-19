@@ -37,7 +37,7 @@ export class ProductoService extends BaseDao{
     }
     async getAll(){
         try {
-            const result = await ProductosModel.find({})
+            const result = await ProductosModel.find()
             return result
         } catch (error) {
             console.log('Hubo un error al mostrar la base de datos',error)
