@@ -93,4 +93,11 @@ export class CarritoService extends BaseDao{
             console.log('Hubo un error al borrar el articulo seleccionado',error)
         }
     }
+    async getAllcarts(){
+        try {
+            return await CarritosModel.find({});
+        } catch (error) {
+            console.log('Hubo un error al buscar los carritos',error)
+        }
+    }
 }
