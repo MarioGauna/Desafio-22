@@ -12,7 +12,6 @@ type Mutation {
     deleteProduct(_id:ID!): Producto
     updateProduct(_id:ID!, data: ProductoUpdateInput): Producto
     createCart: Carrito
-    addToCart(_id:ID!,idProd:ID!):Carrito
     deleteCart(_id:ID!): Carrito
 }
 type Producto {

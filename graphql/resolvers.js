@@ -32,9 +32,6 @@ Mutation:{
     createCart: ()=>{
         return newCart.createCart();
     },
-    addToCart: (_,{_id,data})=>{
-        return newCart.addToCart(_id,data);
-    },
     deleteCart: async (_,{_id})=>{
         return newCart.deleteCart(_id);
     },
